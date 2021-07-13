@@ -1,6 +1,6 @@
 
 from django.urls import path,re_path
-from .views import (ProfileListView,ProfileDetailView,AllProfileListView,RemoveFriend,AddFriend,AcceptFriend,RejectFriend)
+from .views import (ProfileListView,ProfileDetailView,AllProfileListView,RemoveFriend,AddFriend,AcceptFriend,RejectFriend,Search_User)
 
 app_name = 'friends'
 urlpatterns = [
@@ -38,10 +38,7 @@ urlpatterns = [
         r'^rejectfriend/$',
         RejectFriend.as_view(),
         name='rejectfriend'
-    )#,
-    # path(
-    #     '<int:id>/update/',
-    #     ProfileUpdateView.as_view(),
-    #     name='profiles-update'
-    # )
+    ),
+   
+    path('search_user/<str:username>', Search_User.as_view(), name='search_user'),
 ]

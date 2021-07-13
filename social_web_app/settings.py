@@ -25,7 +25,7 @@ SECRET_KEY = 'yixttb%%4_6i#k@ia4*dmff!=(s+%)ns0uy5tgfw)2t9#glxq3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -129,3 +129,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# Activate Django-Heroku.
+# import django_heroku #upar tha os ke 
+# django_heroku.settings(locals())
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

@@ -13,7 +13,7 @@ from django.views.generic import (
   DeleteView
 )
 
-from .models import Profile, Education, Experience, Social
+from .models import Profile, Education, Experience, Social, User
 from .forms import ProfileForm, EducationForm, ExperienceForm, SocialForm
 
 
@@ -49,6 +49,20 @@ class ProfileListView(ListView):
     context = super(ProfileListView, self).get_context_data(*args, **kwargs)
     context['title'] = 'Profiles'
     return context
+
+class Search_User(ListView):
+  model = User
+  template_name = "profiles/profile_searchuser.html"
+  
+
+  def get_queryset(self):
+    username = self.kwargs["username"]
+    print(username)
+    queryset = User.objects.filter(username__icontains = username)
+    print(queryset)
+    return queryset
+
+
 
 
 # PROFILE CREATE VIEW

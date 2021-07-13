@@ -1,6 +1,7 @@
 
+from accounts.views import ProfileView
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import Http404
+from django.http import Http404, request
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.urls import reverse
@@ -13,10 +14,8 @@ from django.views.generic import (
   DeleteView
 )
 
-# from .models import Profile, Education, Experience, Social
 from .models import (Friends,FriendRequest)
 from accounts.models import User
-# from .forms import ProfileForm, EducationForm, ExperienceForm, SocialForm
 
 
 
@@ -26,24 +25,13 @@ class ProfileListView(ListView):
   context_object_name = 'profiles'
   template_name = 'friends/profile_list.html'
 
-  # def get_context_data(self, *args, **kwargs):
-  #   queryset = Friends.objects.filter()
-  #   context = super(ProfileListView, self).get_context_data(*args, **kwargs)
-  #   context['title'] = 'Profiles'
-  #   return context
-  # def get_context_data(self, *args, **kwargs):
-  #   queryset = User.objects.filter()
-  #   context = super(ProfileListView, self).get_context_data(*args, **kwargs)
-  #   context['title'] = 'Profiles'
-  #   return context
   def get(self,request,*args, **kwargs):
     queryset = Friends.objects.filter(received_user=request.session.get('id'))
     print("queryset",queryset)
     myFriends = list()
     for friends in queryset:
       requestedUser = User.objects.get(id=friends.requested_user)
-      # print(requestedUser.id)
-      # requestedUser = User.objects.filter(id=friends.requested_user)
+      
       friendsDetail={'id':requestedUser.id,'name':requestedUser.name}
       myFriends.append(friendsDetail)
       print("queryset",myFriends)
@@ -88,31 +76,8 @@ class AcceptFriend(View):
 class RejectFriend(View):
   def get(self,request,*args, **kwargs):
         FriendRequest.objects.filter(requested_user=request.GET.get('id'),received_user=request.session['id']).update(active=False)
-        # friend_new = Friends(requested_user=request.GET.get('id'),received_user=request.session['id'])
-        # friend_new.save()
+      
         return redirect(reverse('friends:profiles-list'))
-
-# PROFILE CREATE VIEW
-# class ProfileCreateView(LoginRequiredMixin, CheckAuthProfileMixin, CreateView):
-#   queryset = Profile.objects.all()
-#   template_name = 'friends/profile_create.html'
-#   form_class = ProfileForm
-
-#   def form_valid(self, form):
-#     form.instance.user = self.request.user
-#     messages.success(self.request, 'Profile has been created successfully!')
-#     return super(ProfileCreateView, self).form_valid(form)
-
-#   def get_context_data(self, *args, **kwargs):
-#     context = super(ProfileCreateView, self).get_context_data(*args, **kwargs)
-    
-#     if self.get_object() is None:
-#       context['title'] = 'Create Profile'
-#       return context
-#     else:
-#       context['title'] = 'Create Profile'
-#       context['profile'] = self.get_object()
-#       return context
 
 
 # # PROFILE DETAIL VIEW
@@ -122,7 +87,7 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
 
   def get_object(self, *args, **kwargs):
     return get_object_or_404(
-      Profile,
+      ProfileView,
       pk=self.kwargs.get('id')
     )
 
@@ -130,3 +95,20 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
     context = super(ProfileDetailView, self).get_context_data(*args, **kwargs)
     context['title'] = self.get_object().name
     return context
+
+
+class Search_User(ListView):
+  model = User
+  template_name = "friends/profile_searchuser.html"
+  
+
+  def get(self,request,*args, **kwargs):
+    username = self.request.GET.get('username',' ')
+    myFriends = list()
+
+    queryset = User.objects.filter(name__icontains = username)
+    for friends in queryset:
+      friendsDetail={'id':friends.id,'name':friends.name}
+      myFriends.append(friendsDetail)
+    return render(request,self.template_name, {"title":'Search Friends',"profiles":myFriends})
+

@@ -4,7 +4,6 @@ from django.db.models import Q
 from django.contrib.auth import get_user_model
 from .models import User
 
-# User = get_user_model()
 
 
 class RegisterForm(forms.ModelForm):

@@ -21,9 +21,11 @@ from .views import (
     SocialUpdateView,
     SocialDeleteView
 )
+from .views import Search_User
 
 app_name = 'profiles'
 urlpatterns = [
+   
     path(
         '',
         ProfileListView.as_view(),
@@ -119,4 +121,5 @@ urlpatterns = [
         ExperienceDeleteView.as_view(),
         name='experiences-delete'
     ),
+    path('search/<str:username>', Search_User.as_view() ,name='search_user'),
 ]

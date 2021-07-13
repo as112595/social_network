@@ -8,10 +8,7 @@ urlpatterns = [
         r'home/',
         include('pages.urls',namespace='pages')
     ),
-    # path(
-    #     'dev/',
-    #     include('pages.urls', namespace='pages')
-    # ),
+   
     path(
         'accounts/',
         include('accounts.urls', namespace='accounts')
@@ -28,5 +25,6 @@ urlpatterns = [
         'friends/',
         include('friends.urls', namespace='profiles')
     ),
+    
     path('admin/', admin.site.urls),
 ]

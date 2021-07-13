@@ -1,5 +1,6 @@
 <style>
-.asteriskField{
+.asteriskField
+{
   color:red;
 }
 </style>
@@ -13,17 +14,13 @@
     <div class="collapse navbar-collapse" id="collapsibleNavId">
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         {% if request.session.name %}
-        <!-- <li class="nav-item dashboard">
-          <a class="nav-link" href="{% url 'pages:dashboard-view' %}">Dashboard</a>
-        </li> -->
+       
         {% else %}
         <li class="nav-item home">
           <a class="nav-link" href="{% url 'pages:home-view' %}">Home</a>
         </li>
         {% endif %}
-        <!-- <li class="nav-item profile">
-          <a class="nav-link" href="{% url 'profiles:profiles-list'%}">Profiles</a>
-        </li> -->
+      
         {% if request.session.name %}
         <li class="nav-item post">
           <a class="nav-link" href="{% url 'posts:posts-list' %}">News Feed</a>
@@ -37,18 +34,20 @@
         <li class="nav-item exploreFriends">
           <a class="nav-link" href="{% url 'friends:explore-friends' %}">Explore Friends</a>
         </li>
-        {% endif %}
 
 
-        <!-- <li class="nav-item about">
-          <a class="nav-link" href="{% url 'pages:about-view' %}">About</a>
-        </li> -->
+          <input class="form-control me-2" type="search_user" placeholder="Search freinds" aria-label="Search" id="search_name" name="username">
+          <button class="btn btn-outline-success my-2 my-sm-0" id="search_btn"    type="submit">Search</button>
+           {% endif %}
+        
+
+
+
+      
       </ul>
       <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
         {% if request.session.name %}
-        <!-- <li class="nav-item active">
-          <a class="nav-link" href=""><i class="glyphicon glyphicon-user" style="color:white;"></i>{{ request.user.email }}</a>
-        </li> -->
+        
         <li class="nav-item active">
           <a class="nav-link" href="{% url 'accounts:accounts-logout' %}">Logout</a>
         </li>
@@ -64,4 +63,10 @@
     </div>
   </div>
 </nav>
+<script>
+$("#search_btn").on('click',function(){
+  let search_name = $("#search_name").val();
+  window.location.replace("/friends/search_user/"+search_name);
+})
+</script>
 

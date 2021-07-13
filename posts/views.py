@@ -131,7 +131,7 @@ class PostDetailView(DetailView):
 
 
 # # POST DELETE VIEW
-# class PostDeleteView(LoginRequiredMixin, DeleteView):
+class PostDeleteView(LoginRequiredMixin, DeleteView):
   queryset = Post.objects.all()
   context_object_name = 'post'
   template_name = 'posts/post_delete.html'
